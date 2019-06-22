@@ -1,6 +1,11 @@
 call pathogen#infect()
 
-colorscheme darkblue
+set t_Co=256
+hi Normal ctermbg=none
+hi NonText ctermbg=none
+set background=dark
+colorscheme default
+syntax enable
 set hlsearch
 "set mouse=a
 set autoread        " 当文件被外部改变时自动读取 
