@@ -271,6 +271,24 @@ nmap <leader>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR> "查找包含本文�
 "}
 
 "ctrlp{
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\v[\/]\.(git|hg|svn|rvm)$',
+    \ 'file': '\v\.(exe|so|dll|zip|tar|tar.gz|pyc)$',
+    \ }
+let g:ctrlp_working_path_mode=0
+let g:ctrlp_match_window_bottom=1
+let g:ctrlp_match_window_reversed=1
+let g:ctrlp_max_files=0
+let g:ctrlp_max_depth=66
+let g:ctrlp_max_height=30
+let g:ctrlp_mruf_max=600
+let g:ctrlp_follow_symlinks=1
+"默认使用全路径搜索，置1后按文件名搜索，准确率会有所提高，可以用<C-d>进行切换
+let g:ctrlp_by_filename = 1
+"默认不使用正则表达式，置1改为默认使用正则表达式，可以用<C-r>进行切换
+let g:ctrlp_regexp = 0
+"自定义搜索列表的提示符
+let g:ctrlp_line_prefix = '♪ '
 "搜索当前目录下所有文件
 map <C-\>pp <ESC>:CtrlP<CR>
 "搜索文件夹
