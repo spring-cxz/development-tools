@@ -40,6 +40,10 @@ Plug 'NLKNguyen/c-syntax.vim'
 "Plug 'klen/python-mode'
 "Plug 'JuliaEditorSupport/julia-vim'
 "Plug 'scrooloose/syntastic'
+ Plug 'fatih/vim-go' ", { 'tag': '*' }
+ Plug 'jstemmer/gotags'
+ " Plug 'dgryski/vim-godef'
+ Plug 'Blackrush/vim-gocode'
 
 " --- Directory Listing ---
 "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  } " Fuzzy finder
@@ -55,10 +59,10 @@ Plug 'scrooloose/nerdcommenter'
 
 " --- Code Formatting ---
 Plug 'tpope/vim-surround'
-Plug 'Yggdroot/indentLine'
+" Plug 'Yggdroot/indentLine'
 
 " --- Autocompletion---
-"Plug 'Valloric/YouCompleteMe', {'do' : 'python3 install.py --clang-completer'}
+" Plug 'Valloric/YouCompleteMe', {'do' : 'python3 install.py --clang-completer'}
 "snippets
 ""Plug 'msanders/snipmate.vim'
 "Plug 'MarcWeber/vim-addon-mw-utils'|Plug 'tomtom/tlib_vim'|Plug 'garbas/vim-snipmate'
@@ -89,8 +93,9 @@ Plug 'majutsushi/tagbar'
 "----------------------------------
 " document writing and note taking
 "----------------------------------
-"Plug 'altercation/solarized/tree/master/vim-colors-solarized'
+" Plug 'altercation/solarized/tree/master/vim-colors-solarized'
 Plug 'altercation/vim-colors-solarized'
+Plug 'plasticboy/vim-markdown'
 "Plug 'iamcco/markdown-preview.vim'
 "Plug 'iamcco/mathjax-support-for-mkdp'
 "Plug 'vim-latex/vim-latex'
@@ -99,13 +104,13 @@ Plug 'altercation/vim-colors-solarized'
 "Plug 'yxrdydh/vim-latex-live-preview'
 "Plug 'xuhdev/vim-latex-live-preview'
 "Plug 'vimwiki/vimwiki'
-"Plug 'rhysd/vim-grammarous' 
+"Plug 'rhysd/vim-grammarous'
 
 "----------------------------------
 " colorschemes and themes
 "----------------------------------
-"Plug 'powerline/powerline-fonts'
-Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
+Plug 'powerline/powerline-fonts'
+"Plug 'vim-airline/vim-airline' | Plug 'vim-airline/vim-airline-themes'
 "Plug 'romainl/Apprentice'
 "Plug 'ayu-theme/ayu-vim'
 "Plug 'sjl/badwolf'
@@ -127,45 +132,55 @@ call plug#end()
 set nocompatible              " be iMproved, required
 set t_Co=256
 set background=dark
-"colorscheme ron 
+"colorscheme ron
+colorscheme desert
 set number  " Show line numbers
 syntax enable
 set syntax=on	    " 语法高亮
-set showcmd         " 输入的命令显示出来，看的清楚些 
-set autoread        " 当文件被外部改变时自动读取 
+set showcmd         " 输入的命令显示出来，看的清楚些
+set autoread        " 当文件被外部改变时自动读取
 set linebreak " Break lines at word (requires Wrap lines)
 set showbreak=+++ " Wrap-broken line prefix
-set textwidth=100 " Line wrap (number of cols)
+"set textwidth=100 " Line wrap (number of cols)
 set showmatch " Highlight matching brace
 set visualbell  " Use visual bell (no beeping)
- 
+
 set hlsearch  " Highlight all search results
 set smartcase " Enable smart-case search
 set ignorecase  " Always case-insensitive
 set incsearch " Searches for strings incrementally
- 
-set autoindent  " Auto-indent new lines
-set cindent 
-set tabstop=2
+
+" set autoindent  " Auto-indent new lines
+" set smartindent " Enable smart-indent
+set cindent
+set shiftwidth=4  " Number of auto-indent spaces
+
+" set tabstop=8  " Number of spaces per Tab display
+" set softtabstop=8 " Number of spaces per Tab
+
 set expandtab " Use spaces instead of tabs
-set shiftwidth=2  " Number of auto-indent spaces
-set smartindent " Enable smart-indent
 set smarttab  " Enable smart-tabs
-set softtabstop=2 " Number of spaces per Tab
-set laststatus=2    " 总是显示状态行 
-set noswapfile      " 禁止生成swp文件
- 
+
+set laststatus=2    " 总是显示状态行
+set noswapfile      " 禁止生成swp文
+
+set cursorline
+highlight CursorLine   cterm=NONE ctermbg=black ctermfg=NONE guibg=NONE guifg=NONE
+
+highlight WhitespaceEOL ctermbg=red guibg=red
+match WhitespaceEOL /\s\+$/
+
 " Advanced
 set ruler " Show row and column ruler information
- 
+
 set undolevels=1000 " Number of undo levels
 set backspace=indent,eol,start  " Backspace behaviour
- 
+
 
 "set fillchars=vert:\ ,stl:\ ,stlnc:\
 "set guifont=Courier_New:h11:cANSI
 "set guifontwide=新宋体:h11:cGB2312
- 
+
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
@@ -176,8 +191,8 @@ set mouse=v " activate mouse
 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
-map <F2> <ESC>:set tags=tags<CR>
-map <F3> <ESC>:cscope add cscope.out<CR>
+map <F2> <ESC>:set tags=tags<CR><ESC>:cscope add cscope.out<CR>
+map <F3> <ESC>:!rm -rf cscope.* tags; echo ctag building...;ctags -R --c++-kinds=+px --fields=+aiKSz --extra=+q ;echo cscope building...;cscope -Rbq<CR><ESC>:set tags=tags<CR><ESC>:cscope add cscope.out<CR>
 map <F4> <ESC><C-W><C-W>
 "map <F3> <ESC>:Tlist<CR>
 map <F5> <ESC>:NERDTreeToggle<CR>
@@ -197,6 +212,7 @@ let g:AutoOpenWinManager = 1
 "}
 
 "ag {
+nmap <leader><leader>a :Ag! <C-R>=expand("<cword>")<CR><CR>
 map <leader>a :Ag!<space>
 "}
 
@@ -249,11 +265,11 @@ if has("cscope")
   set cst                     " 同时搜索cscope数据库和标签文件"
   "set cscopequickfix=s-,c-,d-,i-,t-,e-    " 使用QuickFix窗口来显示cscope查找结果"
   set nocsverb
-  if filereadable("cscope.out")    "若当前目录下存在cscope数据库，添加该数据库到vim
-    cs add cscope.out
-  elseif $CSCOPE_DB != ""          "否则只要环境变量CSCOPE_DB不为空，则添加其指定的数据库到vim
-    cs add $CSCOPE_DB
-  endif
+  " if filereadable("cscope.out")    "若当前目录下存在cscope数据库，添加该数据库到vim
+  "   cs add cscope.out
+  " elseif $CSCOPE_DB != ""          "否则只要环境变量CSCOPE_DB不为空，则添加其指定的数据库到vim
+  "   cs add $CSCOPE_DB
+  " endif
   set csverb
 endif
 nmap <leader><leader>s :cs find s <space>
@@ -299,7 +315,7 @@ map <C-\>pu <ESC>:CtrlPUndo<CR>
 map <C-\>pl <ESC>:CtrlPLine<CR>
 "搜索修改记录，可以定位光标
 map <C-\>pc <ESC>:CtrlPChangeAll<CR>
-map <C-\>pb <ESC>:CtrlPBookmarkDir<CR>       
+map <C-\>pb <ESC>:CtrlPBookmarkDir<CR>
 "搜索最近修改的文件
 map <C-\>pm <ESC>:CtrlPMRU<CR>
 "进入当前文件的函数列表搜索
@@ -309,14 +325,14 @@ map <C-\>F <ESC>:execute 'CtrlPFunky ' . expand('<cword>')<CR>
 "}
 
 "omnicppcomplete{
-map <F11> <ESC>:!ctags -R --c++-kinds=+px --fields=+aiKSz --extra=+q .<CR> 
+map <F11> <ESC>:!ctags -R --c++-kinds=+px --fields=+aiKSz --extra=+q .<CR>
 filetype plugin on
 let OmniCpp_MayCompleteDot = 1      " autocomplete with .
 let OmniCpp_MayCompleteArrow = 1    " autocomplete with ->
 let OmniCpp_MayCompleteScope = 1    " autocomplete with ::
 let OmniCpp_SelectFirstItem = 2     " select first item
 let OmniCpp_NamespaceSearch = 2     " search namespaces in this and included files
-let OmniCpp_ShowPrototypeInAbbr = 1 " show function prototype in popup window
+let OmniCpp_ShowPrototypeInAbbr = 0 " show function prototype in popup window
 let OmniCpp_GlobalScopeSearch=1     " enable the global scope search
 let OmniCpp_DisplayMode=1           " Class scope completion mode: always show all members
 let OmniCpp_DefaultNamespaces=["std"]
@@ -334,9 +350,84 @@ let g:solarized_termcolors=256
 "let g:solarized_underline =   1       |   0
 "let g:solarized_italic    =   1       |   0
 "let g:solarized_contrast  =   "normal"|   "high" or "low"
-let g:solarized_contrast  =   "high" 
+let g:solarized_contrast  =   "high"
 "let g:solarized_visibility=   "normal"|   "high" or "low"
 let g:solarized_visibility=   "high"
-colorscheme solarized
+" colorscheme solarized
 "------------------------------------------------
 "}
+"
+"scrooloose/nerdcommenter {
+" 注释的时候自动加个空格, 强迫症必配
+let g:NERDSpaceDelims=1
+"}
+"
+"Yggdroot/indentLine' {
+" let g:indentLine_concealcursor = 'inc'
+" let g:indentLine_conceallevel = 2
+let g:indentLine_setColors = 1
+let g:indentLine_color_term = 133
+" let g:indentLine_char = 'c'
+" }
+"
+" fatih/vim-go {
+autocmd FileType go nnoremap <buffer> ]g :GoDef <cr>
+let g:go_rename_command = 'gopls'
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+let g:go_fmt_command = 'gopls'
+let g:go_doc_keywordprg_enabled = 0
+let g:go_gocode_autobuild = 1
+let g:go_gocode_unimported_packages = 1
+let g:go_go_code_completion_enabled = 0
+let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_parameters = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_format_strings = 1
+let g:go_highlight_methods = 1
+let g:go_gopls_enabled = 1
+" let g:go_debug=['lsp']
+let g:go_doc_popup_window = 1
+" }
+"
+" dgryski/vim-godef {
+" let g:go_def_mode="godef"
+" let g:godef_split=3 """左右打开新窗口的时候
+" let g:godef_same_file_in_same_window=1 """函数在同一个文件中时不需要打开新窗口
+" }
+"
+" jstemmer/gotags {
+let g:tagbar_type_go = {
+	\ 'ctagstype' : 'go',
+	\ 'kinds'     : [
+		\ 'p:package',
+		\ 'i:imports:1',
+		\ 'c:constants',
+		\ 'v:variables',
+		\ 't:types',
+		\ 'n:interfaces',
+		\ 'w:fields',
+		\ 'e:embedded',
+		\ 'm:methods',
+		\ 'r:constructor',
+		\ 'f:functions'
+	\ ],
+	\ 'sro' : '.',
+	\ 'kind2scope' : {
+		\ 't' : 'ctype',
+		\ 'n' : 'ntype'
+	\ },
+	\ 'scope2kind' : {
+		\ 'ctype' : 't',
+		\ 'ntype' : 'n'
+	\ },
+	\ 'ctagsbin'  : 'gotags',
+	\ 'ctagsargs' : '-sort -silent'
+\ }
+" }
+
