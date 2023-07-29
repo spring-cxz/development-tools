@@ -2,7 +2,7 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/root/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -173,7 +173,6 @@ export LANG=en_US.UTF-8
 # go env -w GO111MODULE=auto
 # export GOPROXY=https://proxy.golang.org,direct
 
-export PATH=${HOME}/.local/bin:$PATH
 
 alias ls='ls --color=auto'
 alias ll='ls -l'
